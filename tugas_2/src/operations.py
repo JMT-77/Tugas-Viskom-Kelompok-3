@@ -21,3 +21,9 @@ def edge(image,low,high,blur):
 def denoise(image,method,kernel):
     if kernel<3 or kernel%2==0: raise ValueError("kernel must be an odd integer >= 3")
     return {'gaussian':lambda:cv2.GaussianBlur(image,(kernel,kernel),0),'median':lambda:cv2.medianBlur(image,kernel),'bilateral':lambda:cv2.bilateralFilter(image,9,75,75)}[method]()
+
+def brightness(image,c):
+    return cv2.convertScaleAbs(image,alpha=1,beta=c)
+
+def contrast(image,g,p):
+    return cv2.convertScaleAbs(image,alpha=g,beta=p*(1-g))
