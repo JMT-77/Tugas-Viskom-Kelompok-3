@@ -1,0 +1,2 @@
+# Dependency umum tidak diperlukan.
+# Tugas 2 menggunakan OpenCV; instalasi ada di tugas_2/requirements.txt.
