@@ -1,0 +1,131 @@
+{
+  "image_name": "janin.jpg",
+  "original_shape_hw": [
+    434,
+    650
+  ],
+  "roi_original_xyxy": [
+    0,
+    0,
+    650,
+    434
+  ],
+  "working_shape_hw": [
+    214,
+    320
+  ],
+  "ellipse_shape_hw": [
+    86,
+    128
+  ],
+  "coordinate_notes": {
+    "lines_circles": "pixels in resized working ROI; x right, y down",
+    "ellipse_axes": "pixels in small ellipse input; a,b follow ellipse_perimeter convention",
+    "ellipse_center_work": "center mapped to working ROI",
+    "votes": "accumulator scores; not accuracy or clinical confidence"
+  },
+  "parameters": {
+    "max_side": 320,
+    "clahe_clip": 0.02,
+    "canny_sigma": 2.0,
+    "canny_low": 0.1,
+    "canny_high": 0.25,
+    "min_edge_component": 12,
+    "line_peak_ratio": 0.45,
+    "max_lines": 6,
+    "circle_radius_fraction": [
+      0.15,
+      0.48
+    ],
+    "circle_radius_step": 2,
+    "circle_vote_threshold": 0.35,
+    "max_circles": 3,
+    "ellipse_max_side": 128,
+    "ellipse_max_edge_points": 450,
+    "ellipse_accuracy": 5,
+    "ellipse_vote_threshold": 12,
+    "ellipse_min_size": 26,
+    "ellipse_max_size": 43,
+    "ellipse_min_axis_ratio": 0.35,
+    "ellipse_min_edge_support": 0.65,
+    "random_seed": 42
+  },
+  "versions": {
+    "numpy": "2.5.2",
+    "scikit_image": "0.26.0"
+  },
+  "lines": [
+    {
+      "votes": 63,
+      "rho_px": 153.0,
+      "theta_normal_deg": -14.999999999999996
+    },
+    {
+      "votes": 61,
+      "rho_px": 141.0,
+      "theta_normal_deg": -17.0
+    },
+    {
+      "votes": 53,
+      "rho_px": 200.0,
+      "theta_normal_deg": -1.0000000000000013
+    },
+    {
+      "votes": 49,
+      "rho_px": 10.0,
+      "theta_normal_deg": -85.0
+    },
+    {
+      "votes": 45,
+      "rho_px": 191.0,
+      "theta_normal_deg": -17.0
+    },
+    {
+      "votes": 45,
+      "rho_px": 172.0,
+      "theta_normal_deg": -19.0
+    }
+  ],
+  "circles": [
+    {
+      "center_x_px": 150,
+      "center_y_px": 105,
+      "radius_px": 56,
+      "normalized_votes": 0.418749999999999
+    },
+    {
+      "center_x_px": 149,
+      "center_y_px": 87,
+      "radius_px": 32,
+      "normalized_votes": 0.35869565217391336
+    }
+  ],
+  "ellipse": {
+    "votes": 15,
+    "edge_support_fraction": 0.698019801980198,
+    "center_x_small_px": 78.5,
+    "center_y_small_px": 30.5,
+    "a_small_px": 24.49489742783178,
+    "b_small_px": 44.11915683691156,
+    "orientation_skimage_rad": 2.7337246856158828,
+    "center_x_work_px": 197.0,
+    "center_y_work_px": 76.63953488372093
+  },
+  "summary": [
+    {
+      "metode": "Garis",
+      "jumlah_kandidat": 6,
+      "waktu_hough_detik": 0.8585120000007009
+    },
+    {
+      "metode": "Lingkaran",
+      "jumlah_kandidat": 2,
+      "waktu_hough_detik": 0.21274429999903077
+    },
+    {
+      "metode": "Elips",
+      "jumlah_kandidat": 1,
+      "waktu_hough_detik": 1.8510648000010406
+    }
+  ]
+}
