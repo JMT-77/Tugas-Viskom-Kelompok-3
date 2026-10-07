@@ -25,10 +25,10 @@ python src/main.py contrast data/input/contrast/img.jpeg data/output/contrast/ou
 Contoh input PNG dari Wikimedia Commons dan sumber unduhannya dicatat di `IMAGE_SOURCES.md`.
 
 ```bash
-python src/main.py mirror data/input/pencerminan/internet_apple.png data/output/pencerminan/internet_apple_mirror.ppm --direction horizontal
-python src/main.py rotate data/input/rotasi/internet_peppers.png data/output/rotasi/internet_peppers_rotated.ppm --angle 90
-python src/main.py edge data/input/deteksi_tepi/internet_landscape.png data/output/deteksi_tepi/internet_landscape_edges.ppm --low 50 --high 150
-python src/main.py denoise data/input/noise_reduction/internet_apple.png data/output/noise_reduction/internet_apple_denoised.ppm --method median --kernel 5
+python src/main.py mirror data/input/pencerminan/internet_apple.png data/output/pencerminan/internet_apple_mirror.png --direction horizontal
+python src/main.py rotate data/input/rotasi/internet_peppers.png data/output/rotasi/internet_peppers_rotated.png --angle 90
+python src/main.py edge data/input/deteksi_tepi/internet_landscape.png data/output/deteksi_tepi/internet_landscape_edges.png --low 50 --high 150
+python src/main.py denoise data/input/noise_reduction/internet_apple.png data/output/noise_reduction/internet_apple_denoised.png --method median --kernel 5
 ```
 
 Format input umum seperti JPG, JPEG, PNG, BMP, dan TIFF dapat dibaca OpenCV.
