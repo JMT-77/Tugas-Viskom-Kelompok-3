@@ -1,34 +1,118 @@
-# Tugas 2 — Pencerminan, Rotasi, Deteksi Tepi, Noise Reduction
+# Tugas 2 — Implementasi Manual
 
-Implementasi menggunakan OpenCV.
+Tugas 2 mengimplementasikan pencerminan, rotasi, deteksi tepi, noise reduction, brightness, dan contrast menggunakan rumus serta loop Python manual.
 
-## Operasi
+## Aturan library
 
-- `mirror`: pencerminan horizontal atau vertical.
-- `rotate`: rotasi 90, 180, atau 270 derajat.
-- `edge`: grayscale + Gaussian blur + Canny edge detection.
-- `denoise`: Gaussian, median, atau bilateral filtering.
+- OpenCV hanya digunakan pada `read()` untuk mendekode file gambar input.
+- Setelah dibaca, gambar diubah menjadi matriks pixel Python `(R, G, B)`.
+- Tidak ada `cv2.flip`, `cv2.rotate`, `cv2.Canny`, `cv2.GaussianBlur`, `cv2.medianBlur`, `cv2.bilateralFilter`, atau `cv2.convertScaleAbs` dalam pemrosesan.
+- Output PNG ditulis sendiri menggunakan `struct`, `zlib`, dan `binascii`. Output PPM, PGM, dan TXT juga ditulis tanpa library visual-processing.
 
-## Contoh
+## Rumus utama
 
-```bash
-python src/main.py mirror data/input/pencerminan/input.jpg data/output/pencerminan/output.jpg --direction horizontal
-python src/main.py rotate data/input/rotasi/input.jpg data/output/rotasi/output.jpg --angle 90
-python src/main.py edge data/input/deteksi_tepi/input.ppm data/output/deteksi_tepi/output.ppm --low 50 --high 150
-python src/main.py denoise data/input/noise_reduction/input.ppm data/output/noise_reduction/output.ppm --method median --kernel 5
-python src/main.py brightness data/input/brightness/img.jpeg data/output/brightness/output.jpg --c 50
-python src/main.py contrast data/input/contrast/img.jpeg data/output/contrast/output.jpg --g 1.5 --p 127
+### Grayscale
+
+```text
+Y = 0.299R + 0.587G + 0.114B
 ```
 
-## Input PNG dari internet
+### Gaussian filter
 
-Contoh input PNG dari Wikimedia Commons dan sumber unduhannya dicatat di `IMAGE_SOURCES.md`.
-
-```bash
-python src/main.py mirror data/input/pencerminan/internet_apple.png data/output/pencerminan/internet_apple_mirror.png --direction horizontal
-python src/main.py rotate data/input/rotasi/internet_peppers.png data/output/rotasi/internet_peppers_rotated.png --angle 90
-python src/main.py edge data/input/deteksi_tepi/internet_landscape.png data/output/deteksi_tepi/internet_landscape_edges.png --low 50 --high 150
-python src/main.py denoise data/input/noise_reduction/internet_apple.png data/output/noise_reduction/internet_apple_denoised.png --method median --kernel 5
+```text
+G(x,y) = 1/(2πσ²) × exp(-(x²+y²)/(2σ²))
 ```
 
-Format input umum seperti JPG, JPEG, PNG, BMP, dan TIFF dapat dibaca OpenCV.
+Kernel dinormalisasi sehingga jumlah bobot sama dengan 1. Konvolusi dilakukan dengan menjumlahkan hasil perkalian pixel dan bobot kernel.
+
+### Sobel
+
+```text
+Gx = [-1  0  1]       Gy = [-1 -2 -1]
+     [-2  0  2]            [ 0  0  0]
+     [-1  0  1]            [ 1  2  1]
+```
+
+```text
+M = sqrt(Gx² + Gy²)
+θ = atan2(Gy, Gx)
+```
+
+Deteksi tepi kemudian memakai non-maximum suppression, double threshold, dan hysteresis.
+
+### Median filter
+
+Nilai pixel output adalah median nilai pixel pada window kernel.
+
+### Bilateral filter
+
+```text
+w = exp(-jarak_spasial²/(2σs²)) × exp(-perbedaan_warna²/(2σr²))
+output = Σ(w × pixel) / Σw
+```
+
+### Brightness dan contrast
+
+```text
+brightness = pixel + c
+contrast = g × pixel + p × (1 - g)
+```
+
+## Struktur file
+
+```text
+src/
+├── manual_operations.py  # Image, loader, encoder, dan semua rumus manual
+├── operations.py         # wrapper kompatibilitas ke manual_operations.py
+└── main.py               # command-line interface
+```
+
+## Cara menjalankan
+
+```bash
+cd /d/Dev/projects/kuliah/semester_7/viskom
+python -m pip install -r tugas_2/requirements.txt
+```
+
+OpenCV hanya digunakan untuk decoding input. Pemrosesan dan penulisan output dilakukan oleh kode manual.
+
+### Pencerminan
+
+```bash
+python tugas_2/src/main.py mirror tugas_2/data/input/pencerminan/internet_apple.png tugas_2/data/output/pencerminan/manual_mirror.png --direction horizontal
+```
+
+### Rotasi
+
+```bash
+python tugas_2/src/main.py rotate tugas_2/data/input/rotasi/internet_peppers.png tugas_2/data/output/rotasi/manual_rotate.png --angle 90
+```
+
+### Deteksi tepi manual
+
+```bash
+python tugas_2/src/main.py edge tugas_2/data/input/deteksi_tepi/internet_landscape.png tugas_2/data/output/deteksi_tepi/manual_edge.png --low 50 --high 150 --blur 5
+```
+
+Tahapnya adalah grayscale → Gaussian convolution → Sobel → magnitudo/arah gradien → non-maximum suppression → double threshold → hysteresis.
+
+### Noise reduction manual
+
+```bash
+python tugas_2/src/main.py denoise tugas_2/data/input/noise_reduction/internet_apple.png tugas_2/data/output/noise_reduction/manual_gaussian.png --method gaussian --kernel 5
+python tugas_2/src/main.py denoise tugas_2/data/input/noise_reduction/internet_apple.png tugas_2/data/output/noise_reduction/manual_median.png --method median --kernel 5
+python tugas_2/src/main.py denoise tugas_2/data/input/noise_reduction/internet_apple.png tugas_2/data/output/noise_reduction/manual_bilateral.png --method bilateral --kernel 5
+```
+
+### Brightness dan contrast
+
+```bash
+python tugas_2/src/main.py brightness tugas_2/data/input/brightness/img.jpeg tugas_2/data/output/brightness/manual_brightness.png --c 40
+python tugas_2/src/main.py contrast tugas_2/data/input/contrast/img.jpeg tugas_2/data/output/contrast/manual_contrast.png --g 1.5 --p 127
+```
+
+## Catatan performa
+
+Implementasi manual menggunakan loop Python sehingga lebih lambat daripada OpenCV, terutama pada bilateral filter dan gambar beresolusi besar. Keterlambatan tersebut merupakan konsekuensi dari tujuan tugas, yaitu memperlihatkan rumus dan proses per pixel secara eksplisit.
+
+Sumber input PNG dari internet dicatat di `IMAGE_SOURCES.md`.

@@ -1,6 +1,5 @@
 import argparse
 from pathlib import Path
-from re import sub
 from operations import read,write,mirror,rotate,edge,denoise,brightness,contrast
 
 def main():

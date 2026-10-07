@@ -25,10 +25,13 @@ viskom/
 │   │       ├── resolusi/
 │   │       └── rotasi/
 │   └── tests/
-└── tugas_2/                 # OpenCV
+└── tugas_2/                 # Rumus manual; OpenCV hanya untuk load input
     ├── README.md
+    ├── IMAGE_SOURCES.md
     ├── requirements.txt
     ├── src/
+    │   ├── manual_operations.py
+    │   ├── operations.py
     │   └── main.py
     ├── data/
     │   ├── input/
@@ -46,7 +49,8 @@ viskom/
 
 ## Catatan format input
 
-- **Tugas 1** tidak memakai library eksternal. Implementasi membaca/menulis `PPM`, `PGM`, dan BMP sederhana (`24-bit`/`32-bit`). JPG/PNG dapat dipakai pada Tugas 2 melalui OpenCV.
+- **Tugas 1** tidak memakai library eksternal. Implementasi membaca PNG sederhana, `PPM`, `PGM`, dan BMP (`24-bit`/`32-bit`), lalu menulis output teks.
+- **Tugas 2** menggunakan OpenCV hanya untuk membaca input. Seluruh transformasi, rumus, konvolusi, filtering, dan penulisan output dilakukan manual.
 - Ukuran gambar bebas selama tersedia memori yang cukup.
 - Setiap fungsi mempunyai folder input dan output sendiri.
 
@@ -64,10 +68,10 @@ python tugas_1/src/main.py rotate tugas_1/data/input/rotasi/input.png tugas_1/da
 
 ```bash
 pip install -r tugas_2/requirements.txt
-python tugas_2/src/main.py mirror tugas_2/data/input/pencerminan/input.jpg tugas_2/data/output/pencerminan/output.jpg --direction horizontal
-python tugas_2/src/main.py rotate tugas_2/data/input/rotasi/input.jpg tugas_2/data/output/rotasi/output.jpg --angle 90
-python tugas_2/src/main.py edge tugas_2/data/input/deteksi_tepi/input.jpg tugas_2/data/output/deteksi_tepi/output.png
-python tugas_2/src/main.py denoise tugas_2/data/input/noise_reduction/input.jpg tugas_2/data/output/noise_reduction/output.jpg --method median
+python tugas_2/src/main.py mirror tugas_2/data/input/pencerminan/internet_apple.png tugas_2/data/output/pencerminan/manual_mirror.png --direction horizontal
+python tugas_2/src/main.py rotate tugas_2/data/input/rotasi/internet_peppers.png tugas_2/data/output/rotasi/manual_rotate.png --angle 90
+python tugas_2/src/main.py edge tugas_2/data/input/deteksi_tepi/internet_landscape.png tugas_2/data/output/deteksi_tepi/manual_edge.png --low 50 --high 150 --blur 5
+python tugas_2/src/main.py denoise tugas_2/data/input/noise_reduction/internet_apple.png tugas_2/data/output/noise_reduction/manual_median.png --method median --kernel 5
 ```
 
 Jalankan `--help` untuk melihat semua opsi.
