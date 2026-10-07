@@ -130,7 +130,14 @@ def _read_png(path: Path) -> Image:
 
 def write_image(image: Image, filename: str | Path):
     path=Path(filename); path.parent.mkdir(parents=True,exist_ok=True)
-    if path.suffix.lower()==".pgm":
+    if path.suffix.lower()==".txt":
+        with path.open("w",encoding="utf-8") as f:
+            f.write("VISKOM_RGB_TEXT\n")
+            f.write(f"width={image.width}\nheight={image.height}\nchannels=RGB\n")
+            f.write("pixels=\n")
+            for row in image.pixels:
+                f.write(" ".join(f"{r},{g},{b}" for r,g,b in row)+"\n")
+    elif path.suffix.lower()==".pgm":
         with path.open("wb") as f:
             f.write(f"P5\n{image.width} {image.height}\n255\n".encode("ascii"))
             for row in image.pixels:
@@ -148,4 +155,4 @@ def write_image(image: Image, filename: str | Path):
             f.write(header+dib)
             for row in reversed(image.pixels):
                 raw=b"".join(bytes((_clamp(b),_clamp(g),_clamp(r))) for r,g,b in row); f.write(raw+b"\0"*(row_size-len(raw)))
-    else: raise ValueError("Output must use .ppm, .pgm, or .bmp")
+    else: raise ValueError("Output must use .txt, .ppm, .pgm, or .bmp")

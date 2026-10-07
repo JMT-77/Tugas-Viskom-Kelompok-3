@@ -4,7 +4,7 @@ Implementasi pure Python tanpa library eksternal. Hanya modul standard library y
 
 ## Format
 
-Gunakan PNG sederhana 8-bit non-interlaced, PPM/PGM, atau BMP 24-bit/32-bit. PNG grayscale, RGB, grayscale+alpha, dan RGBA didukung. Output tetap disarankan menggunakan PPM/PGM/BMP.
+Gunakan PNG sederhana 8-bit non-interlaced, PPM/PGM, atau BMP 24-bit/32-bit sebagai input. PNG grayscale, RGB, grayscale+alpha, dan RGBA didukung. Untuk pengumpulan, output utama dibuat dalam format `.txt` berisi metadata ukuran dan matriks RGB setiap pixel.
 
 ## Operasi
 
@@ -15,10 +15,9 @@ Gunakan PNG sederhana 8-bit non-interlaced, PPM/PGM, atau BMP 24-bit/32-bit. PNG
 ## Contoh
 
 ```bash
-python src/main.py color-depth data/input/color_depth/input.ppm data/output/color_depth/output.ppm --bits 4
-python src/main.py color-depth data/input/color_depth/input.png data/output/color_depth/output.ppm --bits 4
-python src/main.py resize data/input/resolusi/input.ppm data/output/resolusi/output.ppm --width 640 --height 480
-python src/main.py rotate data/input/rotasi/input.ppm data/output/rotasi/output.ppm --angle 90
+python src/main.py color-depth data/input/color_depth/input.png data/output/color_depth/output.txt --bits 4
+python src/main.py resize data/input/resolusi/input.png data/output/resolusi/output.txt --width 640 --height 480
+python src/main.py rotate data/input/rotasi/input.png data/output/rotasi/output.txt --angle 90
 ```
 
 Input dan output dapat berukuran bebas. File contoh dapat dibuat dengan format PPM:

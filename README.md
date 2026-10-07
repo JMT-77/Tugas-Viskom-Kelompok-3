@@ -55,9 +55,9 @@ viskom/
 ### Tugas 1
 
 ```bash
-python tugas_1/src/main.py color-depth tugas_1/data/input/color_depth/input.ppm tugas_1/data/output/color_depth/output.ppm --bits 4
-python tugas_1/src/main.py resize tugas_1/data/input/resolusi/input.ppm tugas_1/data/output/resolusi/output.ppm --width 640 --height 480
-python tugas_1/src/main.py rotate tugas_1/data/input/rotasi/input.ppm tugas_1/data/output/rotasi/output.ppm --angle 90
+python tugas_1/src/main.py color-depth tugas_1/data/input/color_depth/input.png tugas_1/data/output/color_depth/output.txt --bits 4
+python tugas_1/src/main.py resize tugas_1/data/input/resolusi/input.png tugas_1/data/output/resolusi/output.txt --width 640 --height 480
+python tugas_1/src/main.py rotate tugas_1/data/input/rotasi/input.png tugas_1/data/output/rotasi/output.txt --angle 90
 ```
 
 ### Tugas 2
