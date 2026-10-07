@@ -6,7 +6,10 @@ def read(path):
     return image
 
 def write(path,image):
-    if not cv2.imwrite(str(path),image): raise IOError(f"Cannot write image: {path}")
+    output=image
+    if str(path).lower().endswith('.ppm') and len(image.shape)==2:
+        output=cv2.cvtColor(image,cv2.COLOR_GRAY2BGR)
+    if not cv2.imwrite(str(path),output): raise IOError(f"Cannot write image: {path}")
 
 def mirror(image,direction):
     if direction not in ('horizontal','vertical'): raise ValueError("direction must be horizontal or vertical")
