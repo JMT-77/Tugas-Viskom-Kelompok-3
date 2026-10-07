@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
 import struct
+import zlib
 
 @dataclass
 class Image:
@@ -32,7 +33,9 @@ def read_image(filename: str | Path) -> Image:
         return _read_pnm(path)
     if suffix == ".bmp":
         return _read_bmp(path)
-    raise ValueError("Tugas 1 supports .ppm, .pgm, and .bmp (24/32-bit) only")
+    if suffix == ".png":
+        return _read_png(path)
+    raise ValueError("Tugas 1 supports .png, .ppm, .pgm, and .bmp (24/32-bit) only")
 
 def _read_pnm(path: Path) -> Image:
     data = path.read_bytes()
@@ -89,6 +92,41 @@ def _read_bmp(path: Path) -> Image:
             b,g,r=data[start+x*(bits//8):start+x*(bits//8)+3]; row.append((r,g,b))
         pixels.append(row)
     return Image(width,height,pixels)
+
+def _read_png(path: Path) -> Image:
+    """Read simple non-interlaced 8-bit PNG using only the standard library."""
+    data=path.read_bytes(); signature=b"\x89PNG\r\n\x1a\n"
+    if not data.startswith(signature): raise ValueError("Not a PNG file")
+    pos=len(signature); compressed=bytearray(); width=height=bit_depth=color_type=interlace=None
+    while pos < len(data):
+        length=struct.unpack_from(">I",data,pos)[0]; pos+=4; kind=data[pos:pos+4]; pos+=4
+        chunk=data[pos:pos+length]; pos+=length+4
+        if kind==b"IHDR":
+            width,height,bit_depth,color_type,compression,filtering,interlace=struct.unpack(">IIBBBBB",chunk)
+            if compression!=0 or filtering!=0 or interlace!=0: raise ValueError("Only non-interlaced PNG supported")
+            if bit_depth!=8 or color_type not in (0,2,4,6): raise ValueError("PNG must be 8-bit grayscale/RGB/RGBA")
+        elif kind==b"IDAT": compressed.extend(chunk)
+        elif kind==b"IEND": break
+    if width is None or height is None: raise ValueError("PNG is missing IHDR")
+    channels={0:1,2:3,4:2,6:4}[color_type]; row_bytes=width*channels; raw=zlib.decompress(bytes(compressed)); stride=row_bytes+1
+    if len(raw)!=stride*height: raise ValueError("PNG pixel data has an invalid size")
+    rows=[]; previous=bytearray(row_bytes); offset=0
+    for _ in range(height):
+        filter_type=raw[offset]; current=bytearray(raw[offset+1:offset+stride]); offset+=stride
+        for i in range(row_bytes):
+            left=current[i-channels] if i>=channels else 0; up=previous[i]; upper_left=previous[i-channels] if i>=channels else 0
+            if filter_type==1: current[i]=(current[i]+left)&255
+            elif filter_type==2: current[i]=(current[i]+up)&255
+            elif filter_type==3: current[i]=(current[i]+((left+up)//2))&255
+            elif filter_type==4:
+                p=left+up-upper_left; pa=abs(p-left); pb=abs(p-up); pc=abs(p-upper_left); predictor=left if pa<=pb and pa<=pc else (up if pb<=pc else upper_left); current[i]=(current[i]+predictor)&255
+            elif filter_type!=0: raise ValueError(f"Unsupported PNG filter: {filter_type}")
+        row=[]
+        for x in range(width):
+            values=current[x*channels:(x+1)*channels]
+            row.append((values[0],values[0],values[0]) if color_type in (0,4) else tuple(values[:3]))
+        rows.append(row); previous=current
+    return Image(width,height,rows)
 
 def write_image(image: Image, filename: str | Path):
     path=Path(filename); path.parent.mkdir(parents=True,exist_ok=True)
