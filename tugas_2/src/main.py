@@ -3,7 +3,7 @@ from pathlib import Path
 from operations import read,write,mirror,rotate,edge,denoise,brightness,contrast
 
 def main():
-    p=argparse.ArgumentParser(description='Tugas 2 OpenCV image processing'); sub=p.add_subparsers(dest='command',required=True)
+    p=argparse.ArgumentParser(description='Tugas 2 manual image processing; OpenCV hanya untuk load input'); sub=p.add_subparsers(dest='command',required=True)
     m=sub.add_parser('mirror'); m.add_argument('input'); m.add_argument('output'); m.add_argument('--direction',choices=['horizontal','vertical'],default='horizontal')
     r=sub.add_parser('rotate'); r.add_argument('input'); r.add_argument('output'); r.add_argument('--angle',type=int,choices=[90,180,270],required=True)
     e=sub.add_parser('edge'); e.add_argument('input'); e.add_argument('output'); e.add_argument('--low',type=int,default=50); e.add_argument('--high',type=int,default=150); e.add_argument('--blur',type=int,choices=[3,5,7],default=5)

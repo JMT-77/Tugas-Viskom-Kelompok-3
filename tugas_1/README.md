@@ -2,9 +2,30 @@
 
 Implementasi pure Python tanpa library eksternal. Hanya modul standard library yang digunakan.
 
+## Struktur data
+
+Satu file input PNG dipakai bersama oleh seluruh operasi. Tidak ada salinan input di dalam folder per operasi.
+
+```text
+├── src/
+│   ├── image_io.py
+│   ├── operations.py
+│   ├── main.py
+│   └── run_all.py
+├── data/
+│   ├── input/
+│   │   └── sample_color.png
+│   └── output/
+│       ├── all_results.png
+│       └── text/
+│           ├── color_depth.txt
+│           ├── resolusi.txt
+│           └── rotasi.txt
+```
+
 ## Format
 
-Gunakan PNG sederhana 8-bit non-interlaced, PPM/PGM, atau BMP 24-bit/32-bit sebagai input. PNG grayscale, RGB, grayscale+alpha, dan RGBA didukung. Untuk pengumpulan, output utama dibuat dalam format `.txt` berisi metadata ukuran dan matriks RGB setiap pixel.
+Gunakan PNG sederhana 8-bit non-interlaced, PPM/PGM, atau BMP 24-bit/32-bit sebagai input. PNG grayscale, RGB, grayscale+alpha, dan RGBA didukung. Output visual utama dibuat sebagai satu PNG komposit. Detail matriks RGB tetap disimpan sebagai tiga file `.txt` karena format teks merupakan kebutuhan Tugas 1.
 
 ## Operasi
 
@@ -15,10 +36,23 @@ Gunakan PNG sederhana 8-bit non-interlaced, PPM/PGM, atau BMP 24-bit/32-bit seba
 ## Contoh
 
 ```bash
-python src/main.py color-depth data/input/color_depth/input.png data/output/color_depth/output.txt --bits 4
-python src/main.py resize data/input/resolusi/input.png data/output/resolusi/output.txt --width 640 --height 480
-python src/main.py rotate data/input/rotasi/input.png data/output/rotasi/output.txt --angle 90
+python tugas_1/src/main.py color-depth tugas_1/data/input/sample_color.png tugas_1/data/output/text/color_depth.txt --bits 4
+python tugas_1/src/main.py resize tugas_1/data/input/sample_color.png tugas_1/data/output/text/resolusi.txt --width 640 --height 480
+python tugas_1/src/main.py rotate tugas_1/data/input/sample_color.png tugas_1/data/output/text/rotasi.txt --angle 90
 ```
+
+Untuk menjalankan semua operasi sekaligus dan membuat satu foto hasil lengkap:
+
+```bash
+python tugas_1/src/run_all.py
+```
+
+Output komposit `data/output/all_results.png` memiliki urutan panel:
+
+- `P1`: input asli
+- `P2`: color depth 4-bit
+- `P3`: resize 640 × 480
+- `P4`: rotasi 90°
 
 Input dan output dapat berukuran bebas. File contoh dapat dibuat dengan format PPM:
 

@@ -64,8 +64,20 @@ contrast = g × pixel + p × (1 - g)
 src/
 ├── manual_operations.py  # Image, loader, encoder, dan semua rumus manual
 ├── operations.py         # wrapper kompatibilitas ke manual_operations.py
-└── main.py               # command-line interface
+├── main.py               # satu operasi per perintah
+└── run_all.py             # semua operasi dan satu PNG komposit
+
+data/
+├── input/
+│   ├── internet_apple.png       # dipakai mirror dan noise reduction
+│   ├── internet_peppers.png     # dipakai rotasi
+│   ├── internet_landscape.png   # dipakai deteksi tepi
+│   └── brightness_contrast.jpeg # dipakai brightness dan contrast
+└── output/
+    └── all_results.png
 ```
+
+Satu file yang sama dipakai bersama oleh operasi yang membutuhkan gambar tersebut. Tidak ada salinan input di dalam folder operasi.
 
 ## Cara menjalankan
 
@@ -79,19 +91,19 @@ OpenCV hanya digunakan untuk decoding input. Pemrosesan dan penulisan output dil
 ### Pencerminan
 
 ```bash
-python tugas_2/src/main.py mirror tugas_2/data/input/pencerminan/internet_apple.png tugas_2/data/output/pencerminan/manual_mirror.png --direction horizontal
+python tugas_2/src/main.py mirror tugas_2/data/input/internet_apple.png tugas_2/data/output/mirror.png --direction horizontal
 ```
 
 ### Rotasi
 
 ```bash
-python tugas_2/src/main.py rotate tugas_2/data/input/rotasi/internet_peppers.png tugas_2/data/output/rotasi/manual_rotate.png --angle 90
+python tugas_2/src/main.py rotate tugas_2/data/input/internet_peppers.png tugas_2/data/output/rotate.png --angle 90
 ```
 
 ### Deteksi tepi manual
 
 ```bash
-python tugas_2/src/main.py edge tugas_2/data/input/deteksi_tepi/internet_landscape.png tugas_2/data/output/deteksi_tepi/manual_edge.png --low 50 --high 150 --blur 5
+python tugas_2/src/main.py edge tugas_2/data/input/internet_landscape.png tugas_2/data/output/edge.png --low 50 --high 150 --blur 5
 ```
 
 Tahapnya adalah grayscale → Gaussian convolution → Sobel → magnitudo/arah gradien → non-maximum suppression → double threshold → hysteresis.
@@ -99,20 +111,38 @@ Tahapnya adalah grayscale → Gaussian convolution → Sobel → magnitudo/arah 
 ### Noise reduction manual
 
 ```bash
-python tugas_2/src/main.py denoise tugas_2/data/input/noise_reduction/internet_apple.png tugas_2/data/output/noise_reduction/manual_gaussian.png --method gaussian --kernel 5
-python tugas_2/src/main.py denoise tugas_2/data/input/noise_reduction/internet_apple.png tugas_2/data/output/noise_reduction/manual_median.png --method median --kernel 5
-python tugas_2/src/main.py denoise tugas_2/data/input/noise_reduction/internet_apple.png tugas_2/data/output/noise_reduction/manual_bilateral.png --method bilateral --kernel 5
+python tugas_2/src/main.py denoise tugas_2/data/input/internet_apple.png tugas_2/data/output/denoise_gaussian.png --method gaussian --kernel 5
+python tugas_2/src/main.py denoise tugas_2/data/input/internet_apple.png tugas_2/data/output/denoise_median.png --method median --kernel 5
+python tugas_2/src/main.py denoise tugas_2/data/input/internet_apple.png tugas_2/data/output/denoise_bilateral.png --method bilateral --kernel 5
 ```
 
 ### Brightness dan contrast
 
 ```bash
-python tugas_2/src/main.py brightness tugas_2/data/input/brightness/img.jpeg tugas_2/data/output/brightness/manual_brightness.png --c 40
-python tugas_2/src/main.py contrast tugas_2/data/input/contrast/img.jpeg tugas_2/data/output/contrast/manual_contrast.png --g 1.5 --p 127
+python tugas_2/src/main.py brightness tugas_2/data/input/brightness_contrast.jpeg tugas_2/data/output/brightness.png --c 40
+python tugas_2/src/main.py contrast tugas_2/data/input/brightness_contrast.jpeg tugas_2/data/output/contrast.png --g 1.5 --p 127
 ```
+
+### Menjalankan semua proses sekaligus
+
+```bash
+python tugas_2/src/run_all.py
+```
+
+Output utama adalah `tugas_2/data/output/all_results.png`. Urutan panelnya:
+
+- `P01`–`P04`: empat input unik.
+- `P05`: pencerminan horizontal.
+- `P06`: rotasi 90°.
+- `P07`: deteksi tepi manual.
+- `P08`: Gaussian noise reduction.
+- `P09`: median noise reduction.
+- `P10`: bilateral noise reduction.
+- `P11`: brightness.
+- `P12`: contrast.
 
 ## Catatan performa
 
 Implementasi manual menggunakan loop Python sehingga lebih lambat daripada OpenCV, terutama pada bilateral filter dan gambar beresolusi besar. Keterlambatan tersebut merupakan konsekuensi dari tujuan tugas, yaitu memperlihatkan rumus dan proses per pixel secara eksplisit.
 
-Sumber input PNG dari internet dicatat di `IMAGE_SOURCES.md`.
+Sumber input PNG dari internet dicatat di `IMAGE_SOURCES.md`. File `brightness_contrast.jpeg` adalah input lokal yang sama untuk brightness dan contrast.

@@ -1,5 +1,19 @@
-# Tugas 4
+# Tugas 4 — Fitur Warna HSV
 
-Folder ini disiapkan untuk tugas visi komputer berikutnya.
+Folder ini masih berupa persiapan tugas ekstraksi fitur warna. Kode yang tersedia menghitung momen warna dan histogram HSV dari satu input.
 
-Tambahkan deskripsi topik, dependency, source code, data input, dan data output setelah instruksi tugas 4 tersedia.
+## Data
+
+- Input tunggal: `data/input/img.jpg`.
+- Hasil teks: `data/output/feature_summary.txt`.
+- Tugas 3 tidak disentuh dalam perapian repository ini.
+
+## Menjalankan
+
+Jalankan dari folder `tugas_4`:
+
+```bash
+python main.py > data/output/feature_summary.txt
+```
+
+Output bukan kumpulan gambar, melainkan ringkasan fitur numerik. Karena kode Tugas 4 hanya menghasilkan satu ringkasan fitur, tidak ada beberapa hasil visual yang perlu digabung menjadi satu foto.

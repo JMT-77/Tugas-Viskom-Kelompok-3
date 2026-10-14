@@ -2,6 +2,7 @@
 from __future__ import annotations
 from dataclasses import dataclass
 from pathlib import Path
+import binascii
 import struct
 import zlib
 
@@ -130,7 +131,9 @@ def _read_png(path: Path) -> Image:
 
 def write_image(image: Image, filename: str | Path):
     path=Path(filename); path.parent.mkdir(parents=True,exist_ok=True)
-    if path.suffix.lower()==".txt":
+    if path.suffix.lower()==".png":
+        _write_png(image, path)
+    elif path.suffix.lower()==".txt":
         with path.open("w",encoding="utf-8") as f:
             f.write("VISKOM_RGB_TEXT\n")
             f.write(f"width={image.width}\nheight={image.height}\nchannels=RGB\n")
@@ -155,4 +158,26 @@ def write_image(image: Image, filename: str | Path):
             f.write(header+dib)
             for row in reversed(image.pixels):
                 raw=b"".join(bytes((_clamp(b),_clamp(g),_clamp(r))) for r,g,b in row); f.write(raw+b"\0"*(row_size-len(raw)))
-    else: raise ValueError("Output must use .txt, .ppm, .pgm, or .bmp")
+    else: raise ValueError("Output must use .png, .txt, .ppm, .pgm, or .bmp")
+
+
+def _png_chunk(kind: bytes, payload: bytes) -> bytes:
+    crc = binascii.crc32(kind + payload) & 0xffffffff
+    return struct.pack(">I", len(payload)) + kind + payload + struct.pack(">I", crc)
+
+
+def _write_png(image: Image, path: Path) -> None:
+    """Write an 8-bit RGB PNG with only the Python standard library."""
+    raw = bytearray()
+    for row in image.pixels:
+        raw.append(0)
+        for red, green, blue in row:
+            raw.extend((_clamp(red), _clamp(green), _clamp(blue)))
+    ihdr = struct.pack(">IIBBBBB", image.width, image.height, 8, 2, 0, 0, 0)
+    png = (
+        b"\x89PNG\r\n\x1a\n"
+        + _png_chunk(b"IHDR", ihdr)
+        + _png_chunk(b"IDAT", zlib.compress(bytes(raw), 9))
+        + _png_chunk(b"IEND", b"")
+    )
+    path.write_bytes(png)
