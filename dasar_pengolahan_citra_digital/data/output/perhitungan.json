@@ -1,0 +1,155 @@
+{
+  "properties": {
+    "width": 320,
+    "height": 200,
+    "pixels": 64000,
+    "megapixels": 0.064,
+    "mode": "RGB",
+    "channels": 3,
+    "bits_per_channel": 8,
+    "bits_per_pixel": 24,
+    "levels_per_channel": 256,
+    "color_combinations": 16777216,
+    "raw_bytes": 192000
+  },
+  "coordinate_example": {
+    "x": 107,
+    "y": 67,
+    "matrix_index": [
+      67,
+      107
+    ],
+    "rgb": [
+      86,
+      86,
+      169
+    ]
+  },
+  "color_depth_example": {
+    "input_R": 86,
+    "formula": "round(round(R/255*15)/15*255)",
+    "manual": 85,
+    "program": 85
+  },
+  "note": "Properties describe decoded 8-bit pixels; raw_bytes excludes file headers/compression. Quantization changes effective levels, not PNG storage bit depth.",
+  "red_patch_5x5": [
+    [
+      84,
+      85,
+      86,
+      86,
+      87
+    ],
+    [
+      84,
+      85,
+      86,
+      86,
+      87
+    ],
+    [
+      84,
+      85,
+      86,
+      86,
+      87
+    ],
+    [
+      84,
+      85,
+      86,
+      86,
+      87
+    ],
+    [
+      84,
+      85,
+      86,
+      86,
+      87
+    ]
+  ],
+  "resize_example": {
+    "output_xy": [
+      54,
+      34
+    ],
+    "source_xy": [
+      108,
+      68
+    ],
+    "formula": "sx=floor(x*W_in/W_out), sy=floor(y*H_in/H_out)",
+    "manual_rgb": [
+      86,
+      87,
+      169
+    ],
+    "program_rgb": [
+      86,
+      87,
+      169
+    ]
+  },
+  "rotation_examples": {
+    "90": {
+      "source_xy": [
+        107,
+        67
+      ],
+      "destination_xy": [
+        132,
+        107
+      ],
+      "manual_rgb": [
+        86,
+        86,
+        169
+      ],
+      "program_rgb": [
+        86,
+        86,
+        169
+      ]
+    },
+    "180": {
+      "source_xy": [
+        107,
+        67
+      ],
+      "destination_xy": [
+        212,
+        132
+      ],
+      "manual_rgb": [
+        86,
+        86,
+        169
+      ],
+      "program_rgb": [
+        86,
+        86,
+        169
+      ]
+    },
+    "270": {
+      "source_xy": [
+        107,
+        67
+      ],
+      "destination_xy": [
+        67,
+        212
+      ],
+      "manual_rgb": [
+        86,
+        86,
+        169
+      ],
+      "program_rgb": [
+        86,
+        86,
+        169
+      ]
+    }
+  }
+}

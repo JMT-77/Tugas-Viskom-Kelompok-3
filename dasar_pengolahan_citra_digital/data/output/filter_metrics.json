@@ -1,0 +1,42 @@
+{
+  "edge": {
+    "input": "edge_coins.png",
+    "low": 40,
+    "high": 100,
+    "blur": 5,
+    "edge_pixels": 5244,
+    "limitation": "Boundary extraction only; no segmentation/counting or contour accuracy ground truth."
+  },
+  "noise": {
+    "median": {
+      "input": "median_input.png",
+      "reference": "camera_clean.png",
+      "synthetic_noise": "SALT-PEPPER 6%",
+      "seed": 20261015,
+      "kernel": 3,
+      "psnr_before_db": 16.96898623488601,
+      "psnr_after_db": 26.445111482980455,
+      "improvement_db": 9.476125248094444
+    },
+    "gaussian": {
+      "input": "gaussian_input.png",
+      "reference": "camera_clean.png",
+      "synthetic_noise": "GAUSSIAN SD20",
+      "seed": 20261015,
+      "kernel": 3,
+      "psnr_before_db": 22.426671262706645,
+      "psnr_after_db": 25.755822534556266,
+      "improvement_db": 3.3291512718496215
+    },
+    "bilateral": {
+      "input": "bilateral_input.png",
+      "reference": "coins_clean.png",
+      "synthetic_noise": "GAUSSIAN SD20",
+      "seed": 20261015,
+      "kernel": 5,
+      "psnr_before_db": 22.19562480383782,
+      "psnr_after_db": 26.920094947186016,
+      "improvement_db": 4.724470143348196
+    }
+  }
+}

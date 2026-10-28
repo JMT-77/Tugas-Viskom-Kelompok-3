@@ -1,0 +1,2 @@
+# Hanya untuk decode/load input; semua proses dan output manual.
+Pillow>=11

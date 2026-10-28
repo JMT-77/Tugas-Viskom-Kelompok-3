@@ -1,2 +1,3 @@
-# Dependency umum tidak diperlukan.
-# Tugas 2 menggunakan OpenCV; instalasi ada di tugas_2/requirements.txt.
+-r dasar_pengolahan_citra_digital/requirements.txt
+-r morfologi_citra/requirements.txt
+-r hough_transform/requirements.txt

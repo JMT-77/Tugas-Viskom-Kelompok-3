@@ -1,111 +1,66 @@
-# Tugas-Viskom-Kelompok-3
+# Proyek Visi Komputer
 
-Kumpulan tugas praktikum Visi Komputer.
-
-## Struktur
+Kode dan data dikelompokkan berdasarkan materi dalam tiga folder huruf kecil dengan underscore.
 
 ```text
 viskom/
-├── README.md
-├── requirements.txt
-├── tugas_1/                 # Pure Python, tanpa library eksternal
-│   ├── README.md
-│   ├── requirements.txt
-│   ├── src/
-│   │   ├── image_io.py
-│   │   ├── operations.py
-│   │   ├── main.py
-│   │   └── run_all.py
-│   ├── data/
-│   │   ├── input/
-│   │   │   └── sample_color.png
-│   │   └── output/
-│   │       ├── all_results.png
-│   │       └── text/
-│   │           ├── color_depth.txt
-│   │           ├── resolusi.txt
-│   │           └── rotasi.txt
-├── tugas_2/                 # Rumus manual; OpenCV hanya untuk load input
-│   ├── README.md
-│   ├── IMAGE_SOURCES.md
-│   ├── requirements.txt
-│   ├── src/
-│   │   ├── manual_operations.py
-│   │   ├── operations.py
-│   │   ├── main.py
-│   │   └── run_all.py
-│   ├── data/
-│   │   ├── input/
-│   │   │   ├── internet_apple.png
-│   │   │   ├── internet_peppers.png
-│   │   │   ├── internet_landscape.png
-│   │   │   └── brightness_contrast.jpeg
-│   │   └── output/
-│   │       └── all_results.png
-├── tugas_morfologi/         # Morfologi citra untuk praproses dokumen/OCR
-│   ├── README.md
-│   ├── REFERENCES.md
-│   ├── requirements.txt
-│   ├── src/
-│   │   ├── create_sample.py
-│   │   ├── operations.py
-│   │   └── main.py
-│   ├── data/
-│   │   ├── input/
-│   │   │   └── document_scan.png
-│   │   └── output/
-│   │       └── document_morphology_results.png
-│   └── tests/
-└── tugas_4/                 # Persiapan ekstraksi fitur warna
-    ├── README.md
-    ├── main.py
-    └── data/
-        ├── input/
-        │   └── img.jpg
-        └── output/
-            └── feature_summary.txt
+  dasar_pengolahan_citra_digital/
+    src/           # properti/geometri, filter/intensitas, tambahan fitur warna
+    tests/
+    data/input/
+    data/output/   # PNG sebelum/sesudah per fungsi dan perhitungan JSON/TXT
+    README.md
+    requirements.txt
+  morfologi_citra/
+    src/
+    tests/
+    data/input/
+    data/output/
+    README.md
+    REFERENCES.md
+    requirements.txt
+  hough_transform/
+    src/main.py
+    data/input/janin.jpg
+    data/output/
+    README.md
+    requirements.txt
+  README.md
+  requirements.txt
 ```
 
-Tugas 3 sengaja tidak diubah sesuai permintaan.
+## Instalasi
 
-## Catatan format input
-
-- **Tugas 1** tidak memakai library eksternal. Implementasi membaca PNG sederhana, `PPM`, `PGM`, dan BMP (`24-bit`/`32-bit`), lalu menulis output teks.
-- **Tugas 2** menggunakan OpenCV hanya untuk membaca input. Seluruh transformasi, rumus, konvolusi, filtering, dan penulisan output dilakukan manual.
-- Ukuran gambar bebas selama tersedia memori yang cukup.
-- Input yang sama disimpan satu kali dan dipakai bersama oleh operasi yang membutuhkannya.
-- Tugas 1, Tugas 2, dan Tugas Morfologi menyediakan satu output PNG komposit untuk hasil visual; Tugas 4 menyimpan satu ringkasan fitur teks karena kodenya tidak menghasilkan beberapa citra.
-
-## Menjalankan
-
-### Tugas 1
-
-```bash
-python tugas_1/src/run_all.py
+```powershell
+python -m pip install -r requirements.txt
 ```
 
-### Tugas 2
+Untuk operasi dasar saja, cukup install `dasar_pengolahan_citra_digital/requirements.txt`. Pillow hanya membaca gambar; operasi inti dan output dasar manual. Morfologi, Hough dan tambahan HSV masih memakai pustaka implementasi lama. Perapian ini tidak mengganti algoritma tersebut.
 
-```bash
-pip install -r tugas_2/requirements.txt
-python tugas_2/src/run_all.py
+## Pengolahan citra dasar
+
+```powershell
+python dasar_pengolahan_citra_digital/src/run_all.py
+python dasar_pengolahan_citra_digital/src/main.py --help
+python -m unittest discover -s dasar_pengolahan_citra_digital/tests -v
 ```
 
-### Tugas Morfologi
+Output: `dasar_pengolahan_citra_digital/data/output/`. Runner mencakup properti depth/resolusi, kuantisasi, resize, rotasi, pencerminan, deteksi tepi, reduksi noise, brightness dan contrast. PNG dipisah per fungsi. Detail rumus, parameter dan tambahan HSV: [README pengolahan dasar](dasar_pengolahan_citra_digital/README.md).
 
-```bash
-pip install -r tugas_morfologi/requirements.txt
-python tugas_morfologi/src/main.py tugas_morfologi/data/input/document_scan.png tugas_morfologi/data/output/document_morphology_results.png --kernel 3
+## Morfologi
+
+```powershell
+python morfologi_citra/src/main.py morfologi_citra/data/input/document_scan.png morfologi_citra/data/output/document_morphology_results.png --kernel 3
 ```
 
-Perintah tersebut menjalankan dilation, erosion, opening, closing, top-hat, hit-or-miss, skeletonization, dan thinning secara bersamaan. Hasilnya digabung menjadi satu PNG komposit.
+Kode, input dan komposit dipertahankan. Detail: [README morfologi](morfologi_citra/README.md).
 
-### Tugas 4
+## Hough Transform
 
-```bash
-cd tugas_4
-python main.py > data/output/feature_summary.txt
-cd ..
+```powershell
+python hough_transform/src/main.py --tanpa-tampilan
 ```
 
-Jalankan `--help` untuk melihat semua opsi.
+Default membaca `hough_transform/data/input/janin.jpg` dan menulis ke `hough_transform/data/output/`. Kode Python sudah terpisah dari data input. Detail: [README Hough](hough_transform/README.md).
+
+Folder bernomor, wrapper duplikat, cache, komposit dasar lama, dan dokumen petunjuk yang path-nya usang digantikan struktur ini. Repositori Git dipertahankan; tidak ada merge atau SQL yang dijalankan.

@@ -1,0 +1,17 @@
+{
+  "prepared_date": "2026-10-15",
+  "seed": 20261015,
+  "noise_is_synthetic": true,
+  "sources": {
+    "coins": "https://raw.githubusercontent.com/scikit-image/scikit-image/v0.19.3/skimage/data/coins.png",
+    "camera": "https://raw.githubusercontent.com/scikit-image/scikit-image/v0.19.3/skimage/data/camera.png"
+  },
+  "sha256": {
+    "edge_coins.png": "4e24aa22d3f922d78ed07bd4a6e33fb143e93526f0bdacc8ae13505c4f50b2ef",
+    "coins_clean.png": "67e60d397e84bbee776c711c5dbd8ba29aa70b54ea9983956389f1c3ab151989",
+    "camera_clean.png": "29c123a60692e66facc1a891b90b04abe8173d15332b8cf9aaf83799fd2f931f",
+    "bilateral_input.png": "e01e9a2fadb0a669f6f4716025571bf059ffa1071fc102ef604c18c29c96a76e",
+    "gaussian_input.png": "0a75c19fefdbe807d3fcfcab5ff4033051daeaba36d192a125936350710e1066",
+    "median_input.png": "6fbae2954ffd7a8ee85189c257b69b5dce46be898b5b8fca37f2262493ed6ae4"
+  }
+}
