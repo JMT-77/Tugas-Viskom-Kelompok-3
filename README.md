@@ -64,3 +64,7 @@ python hough_transform/src/main.py --tanpa-tampilan
 Default membaca `hough_transform/data/input/janin.jpg` dan menulis ke `hough_transform/data/output/`. Kode Python sudah terpisah dari data input. Detail: [README Hough](hough_transform/README.md).
 
 Folder bernomor, wrapper duplikat, cache, komposit dasar lama, dan dokumen petunjuk yang path-nya usang digantikan struktur ini. Repositori Git dipertahankan; tidak ada merge atau SQL yang dijalankan.
+
+## Jupyter Notebook
+
+Install dependensi proyek dan Jupyter dalam environment Python yang sama: `python -m pip install -r requirements.txt notebook ipykernel`. Dari root proyek jalankan `jupyter notebook` dan buka `viskom.ipynb`. Notebook menyediakan kode dan sel terpisah untuk Hough, pengolahan dasar, fitur warna, dan morfologi. Jalankan sel persiapan serta definisi fungsi yang dibutuhkan sebelum sel operasi. Hasil Hough disimpan ke folder sementara yang ditampilkan di notebook; salin hasil yang ingin disimpan. Sumber gambar Hough ada di [HOUGH_BAB3.md](HOUGH_BAB3.md).
