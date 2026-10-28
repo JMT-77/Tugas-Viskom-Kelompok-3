@@ -1,5 +1,7 @@
 """Run with: python -m unittest discover -s dasar_pengolahan_citra_digital/tests -v."""
 import unittest
+import warnings
+from PIL import Image as PILImage
 from tempfile import TemporaryDirectory
 from pathlib import Path
 from dasar_pengolahan_citra_digital.src.image_io import Image,read_image,write_image,comparison
@@ -49,6 +51,24 @@ class OperationsTest(unittest.TestCase):
             with self.assertRaises(ValueError): resize_nearest(self.image,width,height)
         with self.assertRaises(ValueError): rotate(self.image,45)
         with self.assertRaises(ValueError): Image(2,2,[[(0,0,0)]])
+
+    def test_read_rgb_and_grayscale_without_deprecation(self):
+        with TemporaryDirectory() as directory:
+            for mode, values, expected in (
+                ('RGB', [(1, 2, 3), (20, 30, 40)], [(1, 2, 3), (20, 30, 40)]),
+                ('L', [17, 200], [(17, 17, 17), (200, 200, 200)]),
+            ):
+                with self.subTest(mode=mode):
+                    path = Path(directory) / f'{mode}.png'
+                    image = PILImage.new(mode, (2, 1))
+                    for x, value in enumerate(values):
+                        image.putpixel((x, 0), value)
+                    image.save(path)
+                    with warnings.catch_warnings():
+                        warnings.simplefilter('error', DeprecationWarning)
+                        result = read_image(path)
+                    self.assertEqual(result.mode, mode)
+                    self.assertEqual(result.pixels, [expected])
 
     def test_manual_writer_roundtrip_and_comparison(self):
         with TemporaryDirectory() as directory:

@@ -32,7 +32,7 @@ def read_image(filename):
         mode = "L" if decoded.mode == "L" else "RGB"
         rgb = decoded.convert("RGB")
         width, height = rgb.size
-        flat = list(rgb.getdata())
+        flat = list(rgb.get_flattened_data() if hasattr(rgb, "get_flattened_data") else rgb.getdata())
     return Image(width, height, [flat[y*width:(y+1)*width] for y in range(height)], mode)
 
 
