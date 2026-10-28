@@ -152,7 +152,7 @@ def proses_gambar(image_path, args):
         rgb_original = np.array(ImageOps.exif_transpose(im).convert("RGB"))
 
     original_h, original_w = rgb_original.shape[:2]
-    print(f"Ukuran gambar asli: {original_w} × {original_h} piksel")
+    print(f"Ukuran gambar asli: {original_w} x {original_h} piksel")
     fig, ax = plt.subplots(figsize=(9, 6))
     ax.imshow(rgb_original)
     ax.set(title="Gambar USG asli — gunakan koordinat ini untuk ROI", xlabel="x (piksel)", ylabel="y (piksel)")
@@ -194,7 +194,7 @@ def proses_gambar(image_path, args):
     edges = canny(enhanced, sigma=CANNY_SIGMA,
                   low_threshold=CANNY_LOW, high_threshold=CANNY_HIGH)
     edges = clean_edges(edges, MIN_EDGE_COMPONENT)
-    print(f"ROI kerja: {work_w} × {work_h}; jumlah piksel tepi: {edges.sum()}")
+    print(f"ROI kerja: {work_w} x {work_h}; jumlah piksel tepi: {edges.sum()}")
     print("Koordinat hasil garis/lingkaran memakai piksel ROI kerja, bukan gambar asli.")
 
     fig, axes = plt.subplots(1, 4, figsize=(16, 4))
@@ -286,7 +286,7 @@ def proses_gambar(image_path, args):
     plt.tight_layout()
     fig.savefig(OUTPUT_DIR / "03_hough_lingkaran.png", bbox_inches="tight")
     plt.close(fig)
-    print(f"Radius diuji: {rmin}–{rmax} piksel; jumlah kandidat: {len(circle_records)}")
+    print(f"Radius diuji: {rmin}-{rmax} piksel; jumlah kandidat: {len(circle_records)}")
     print(f"Waktu: {circle_seconds:.3f} detik")
     for item in circle_records:
         print(item)
@@ -309,7 +309,7 @@ def proses_gambar(image_path, args):
         points = all_points[chosen]
         ellipse_edges = np.zeros_like(ellipse_edges)
         ellipse_edges[points[:, 0], points[:, 1]] = True
-        print(f"Titik tepi dikurangi: {len(all_points)} → {len(points)} untuk mempercepat Hough elips.")
+        print(f"Titik tepi dikurangi: {len(all_points)} -> {len(points)} untuk mempercepat Hough elips.")
 
     ellipse_min_size = max(8, round(min(ellipse_h, ellipse_w) * ELLIPSE_MIN_SIZE_FRACTION))
     ellipse_max_size = max(6, round(min(ellipse_h, ellipse_w) * ELLIPSE_MAX_SIZE_FRACTION))
