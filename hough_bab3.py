@@ -783,3 +783,4 @@ if __name__ == "__main__":
 
     except (OSError, ValueError, KeyError) as error:
         print(f"\nGAGAL: {error}")
+        raise SystemExit(1)

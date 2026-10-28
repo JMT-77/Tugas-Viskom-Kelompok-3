@@ -2,3 +2,10 @@ __pycache__/
 *.pyc
 .venv/
 venv/
+
+# Input referensi lokal dan hasil Hough Bab 3
+/citra/388_HC.png
+/citra/building.jpg
+/citra/coins.png
+/citra/coffee.png
+/hasil/
